@@ -37,12 +37,13 @@ function createClusterVisualization(container, clustersData) {
         .size([width * 0.8, height * 0.8])
         .padding(5);
 
-    // Prepare data for pack layout
+    // Prepare data for pack layout - FIXED: ensure themes are preserved
     const hierarchyData = {
         children: clustersData.map(cluster => ({
             id: cluster.id,
             size: cluster.size,
             publications: cluster.publications,
+            themes: cluster.themes, // Ensure themes are included here
             value: cluster.size
         }))
     };
@@ -122,7 +123,7 @@ function createClusterVisualization(container, clustersData) {
         `;
 
         // Add themes if available
-        if (d.data.publications && d.data.themes && d.data.themes.length > 0) {
+        if (d.data.themes && d.data.themes.length > 0) {
             tooltipContent += `<br><span class="text-muted">Common themes:</span><br>`;
             tooltipContent += `<small>${d.data.themes.join(", ")}</small>`;
         }
