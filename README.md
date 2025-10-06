@@ -131,7 +131,8 @@ The application uses a curated dataset of NASA Space Biology publications locate
 [Specify license information here]
 
 ## Contributors
-[List contributors here]
+DEEPA RAJA
+SANDHANA RAJESH
 
 ## Acknowledgments
 - NASA Space Biology Program for providing the publication dataset
