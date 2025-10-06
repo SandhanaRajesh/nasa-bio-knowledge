@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NASA Space Biology Knowledge Engine</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <!-- Header with NASA branding -->
+    <header class="bg-black text-white p-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <a href="/" class="text-white text-decoration-none">
+                        <h1><i class="fas fa-rocket me-2"></i>NASA Space Biology Knowledge Engine</h1>
+                    </a>
+                </div>
+                <div class="col-md-6 text-end">
+                    <img src="https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg" alt="NASA Logo" height="50">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main dashboard content -->
+    <main class="container-fluid py-4">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <!-- Dashboard navigation -->
+                <div class="card bg-dark text-light border-light mb-4">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="knowledge-graph-tab" data-bs-toggle="tab" data-bs-target="#knowledge-graph" type="button" role="tab" aria-controls="knowledge-graph" aria-selected="true">
+                                    <i class="fas fa-project-diagram me-2"></i>Knowledge Graph
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="research-clusters-tab" data-bs-toggle="tab" data-bs-target="#research-clusters" type="button" role="tab" aria-controls="research-clusters" aria-selected="false">
+                                    <i class="fas fa-object-group me-2"></i>Research Clusters
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="search-tab" data-bs-toggle="tab" data-bs-target="#search" type="button" role="tab" aria-controls="search" aria-selected="false">
+                                    <i class="fas fa-search me-2"></i>Advanced Search
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab content -->
+                <div class="tab-content" id="dashboardTabContent">
+                    <!-- Knowledge Graph tab -->
+                    <div class="tab-pane fade show active" id="knowledge-graph" role="tabpanel" aria-labelledby="knowledge-graph-tab">
+                        <div class="card bg-dark text-light border-light">
+                            <div class="card-body">
+                                <h3 class="card-title">Interactive Knowledge Graph</h3>
+                                <p class="card-text">Explore connections between publications and research topics. Click on nodes to see details.</p>
+
+                                <!-- Graph controls -->
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-outline-primary" id="zoom-in-btn">
+                                                <i class="fas fa-search-plus"></i> Zoom In
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary" id="zoom-out-btn">
+                                                <i class="fas fa-search-minus"></i> Zoom Out
+                                            </button>
+                                            <button type="button" class="btn btn-outline-primary" id="reset-graph-btn">
+                                                <i class="fas fa-sync"></i> Reset
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-check form-switch">
+                                            <input class="form-check-input" type="checkbox" id="filter-keywords-toggle">
+                                            <label class="form-check-label" for="filter-keywords-toggle">Show only publications</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Graph visualization -->
+                                <div id="full-graph-container" class="graph-container">
+                                    <div class="loading-spinner">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="mt-2">Loading knowledge graph...</p>
+                                    </div>
+                                </div>
+
+                                <!-- Node details panel -->
+                                <div class="card mt-3 bg-dark border-secondary" id="node-details-panel" style="display: none;">
+                                    <div class="card-body">
+                                        <h4 class="card-title" id="node-details-title">Node Details</h4>
+                                        <div id="node-details-content">
+                                            <!-- Node details will be populated here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Research Clusters tab -->
+                    <div class="tab-pane fade" id="research-clusters" role="tabpanel" aria-labelledby="research-clusters-tab">
+                        <div class="card bg-dark text-light border-light">
+                            <div class="card-body">
+                                <h3 class="card-title">Research Clusters</h3>
+                                <p class="card-text">Related groups of publications clustered by topic. Explore to find research patterns and opportunities.</p>
+
+                                <!-- Clusters visualization -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div id="clusters-container" class="clusters-container">
+                                            <div class="loading-spinner">
+                                                <div class="spinner-border text-primary" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <p class="mt-2">Analyzing research clusters...</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cluster details -->
+                                <div class="accordion" id="clustersAccordion">
+                                    <!-- Cluster details will be populated here -->
+                                    <div class="text-center py-4" id="clusters-loading">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        <p class="mt-2">Loading cluster details...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Search tab -->
+                    <div class="tab-pane fade" id="search" role="tabpanel" aria-labelledby="search-tab">
+                        <div class="card bg-dark text-light border-light">
+                            <div class="card-body">
+                                <h3 class="card-title">Advanced Search</h3>
+                                <p class="card-text">Search publications by keyword, topic, or research area.</p>
+
+                                <!-- Search form -->
+                                <div class="row mb-4">
+                                    <div class="col-md-12">
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="advanced-search-input" class="form-control form-control-lg" placeholder="Enter keywords (e.g., microgravity, bone loss, radiation)">
+                                            <button class="btn btn-primary btn-lg" type="button" id="advanced-search-button">
+                                                <i class="fas fa-search"></i> Search
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Search filters -->
+                                <div class="row mb-4">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="filter-section">Publication Section</label>
+                                            <select class="form-select" id="filter-section">
+                                                <option value="all" selected>All Sections</option>
+                                                <option value="abstract">Abstract</option>
+                                                <option value="results">Results</option>
+                                                <option value="conclusion">Conclusion</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-check mt-4">
+                                            <input class="form-check-input" type="checkbox" id="exact-match-checkbox">
+                                            <label class="form-check-label" for="exact-match-checkbox">
+                                                Exact Match Only
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Search results -->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="advanced-search-results">
+                                            <!-- Search results will be populated here -->
+                                            <div class="alert alert-info" role="alert">
+                                                Enter search terms above to find relevant publications.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white p-3 mt-5">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>NASA Space Apps Challenge 2025</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>Space Biology Knowledge Engine</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Publication Detail Modal -->
+    <div class="modal fade" id="publication-detail-modal" tabindex="-1" aria-labelledby="publication-detail-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="publication-detail-modal-label">Publication Details</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="publication-detail-content">
+                    <!-- Publication details will be populated here -->
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading publication details...</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <a href="#" class="btn btn-primary" id="view-original-link" target="_blank">View Original Publication</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/static/js/dashboard.js"></script>
+    <script src="/static/js/graph.js"></script>
+    <script src="/static/js/clusters.js"></script>
+</body>
+</html>

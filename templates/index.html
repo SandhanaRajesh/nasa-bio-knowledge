@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASA Space Biology Knowledge Engine</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body class="bg-dark text-light">
+    <!-- Header with NASA branding -->
+    <header class="bg-black text-white p-3">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1><i class="fas fa-rocket me-2"></i>NASA Space Biology Knowledge Engine</h1>
+                </div>
+                <div class="col-md-6 text-end">
+                    <img src="https://www.nasa.gov/wp-content/themes/nasa/assets/images/nasa-logo.svg" alt="NASA Logo" height="50">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="container-fluid py-4">
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card bg-dark text-light border-light">
+                    <div class="card-body">
+                        <h2 class="card-title text-center mb-4">Explore 608 NASA Space Biology Publications</h2>
+
+                        <!-- Search bar -->
+                        <div class="search-container mb-4">
+                            <div class="input-group">
+                                <input type="text" id="search-input" class="form-control form-control-lg" placeholder="Search publications by keyword (e.g., microgravity, bone, radiation)">
+                                <button class="btn btn-primary btn-lg" type="button" id="search-button">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- User options cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 bg-dark border-primary text-light">
+                                    <div class="card-body">
+                                        <h4 class="card-title"><i class="fas fa-microscope me-2"></i>For Scientists</h4>
+                                        <p class="card-text">Explore publications to generate new hypotheses and identify research opportunities.</p>
+                                        <a href="/dashboard?view=scientist" class="btn btn-outline-primary">Explore Data</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 bg-dark border-success text-light">
+                                    <div class="card-body">
+                                        <h4 class="card-title"><i class="fas fa-chart-line me-2"></i>For Managers</h4>
+                                        <p class="card-text">Identify trends and investment opportunities in space biology research.</p>
+                                        <a href="/dashboard?view=manager" class="btn btn-outline-success">View Trends</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="card h-100 bg-dark border-warning text-light">
+                                    <div class="card-body">
+                                        <h4 class="card-title"><i class="fas fa-shuttle-space me-2"></i>For Mission Architects</h4>
+                                        <p class="card-text">Access critical biological insights for safe and efficient Moon and Mars missions.</p>
+                                        <a href="/dashboard?view=mission" class="btn btn-outline-warning">Mission Insights</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics cards -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card bg-dark text-light border-light">
+                    <div class="card-body">
+                        <h3 class="card-title mb-4">Publication Statistics</h3>
+                        <div class="row" id="stats-container">
+                            <div class="col-md-3 mb-3">
+                                <div class="card bg-primary text-white h-100">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Total Publications</h5>
+                                        <p class="card-text display-4" id="total-publications">...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card bg-success text-white h-100">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Publications Analyzed</h5>
+                                        <p class="card-text display-4" id="processed-publications">...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card bg-info text-white h-100">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Knowledge Graph Nodes</h5>
+                                        <p class="card-text display-4" id="graph-nodes">...</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="card bg-warning text-dark h-100">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Knowledge Graph Connections</h5>
+                                        <p class="card-text display-4" id="graph-edges">...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview of knowledge graph -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card bg-dark text-light border-light">
+                    <div class="card-body">
+                        <h3 class="card-title mb-3">Knowledge Graph Preview</h3>
+                        <p class="card-text">This graph shows connections between publications and key research topics. Click a node to explore related publications.</p>
+                        <div id="graph-container" class="graph-preview">
+                            <div class="loading-spinner">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                                <p class="mt-2">Loading knowledge graph...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white p-3">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>NASA Space Apps Challenge 2025</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>Space Biology Knowledge Engine</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for search results -->
+    <div class="modal fade" id="search-results-modal" tabindex="-1" aria-labelledby="search-results-modal-label" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-light">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="search-results-modal-label">Search Results</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="search-results-container">
+                        <!-- Search results will be populated here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    <script src="/static/js/graph.js"></script>
+</body>
+</html>
